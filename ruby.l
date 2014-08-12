@@ -1,5 +1,4 @@
 %{
-  #include <stdlib.h>
   #include <stdio.h>
 %}
 
@@ -7,10 +6,5 @@
 
 %%
 [0-9]+ { printf("NUMBER: %s\n", yytext); }
-. {}
-%%
-
-int main(int argc, char *argv[]) {
-  yylex();
-  return EXIT_SUCCESS;
-}
+\n {}
+. { fprintf(stderr, "Unknown token %s\n", yytext); }

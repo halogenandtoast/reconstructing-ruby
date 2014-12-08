@@ -4,6 +4,8 @@
   void yyerror(char const *s) { fprintf(stderr, "%s\n", s); }
 %}
 
+%left tPLUS
+
 %token tNUMBER
 %token tPLUS
 %start program

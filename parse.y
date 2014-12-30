@@ -1,13 +1,15 @@
 %{
   #include <stdio.h>
   extern int yylex(void);
-  void yyerror(char const *s) { fprintf(stderr, "%s\n", s); }
+  extern void yyerror(char const *s);
 %}
 
 %left tPLUS
 
-%token tNUMBER
-%token tPLUS
+%token tSTRING tFLOAT tNUMBER tID tCONSTANT tEQUAL tGT tLT tGTE tLTE tNEQUAL
+%token tPLUS tMINUS tMULT tDIV tMOD tEMARK tQMARK tAND tOR tLSBRACE tRSBRACE
+%token tLPAREN tRPAREN tLBRACE tRBRACE tAT tDOT tCOMMA tCOLON
+
 %start program
 
 %%

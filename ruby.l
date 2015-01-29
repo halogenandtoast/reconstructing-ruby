@@ -1,7 +1,9 @@
 %{
   #include <stdio.h>
   #include <string.h>
+  #include "node.h"
   #include "parse.tab.h"
+  #define YY_DECL int yylex(YYSTYPE *yylval, parser_state *state)
   #define TOKEN(id) return t##id
   #define KEYWORD(id) return k##id
 %}
@@ -16,12 +18,12 @@ class { KEYWORD(CLASS); }
 end { KEYWORD(END); }
 def {KEYWORD(DEF); }
 #.*$ {}
-\"([^"]|\\.)*\" { yylval.sval = strdup(yytext); TOKEN(STRING); }
-\'([^']|\\.)*\' { yylval.sval = strdup(yytext); TOKEN(STRING); }
-{NUMBER}(\.{NUMBER}|(\.{NUMBER})?[eE][+-]?{NUMBER}) { yylval.fval = atof(yytext); TOKEN(FLOAT); }
-{NUMBER} { yylval.ival = atoi(yytext); TOKEN(NUMBER); }
-[a-z_][a-zA-Z0-9_]* { yylval.sval = strdup(yytext); TOKEN(ID); }
-[A-Z][a-zA-Z0-9_]* { yylval.sval = strdup(yytext); TOKEN(CONSTANT); }
+\"([^"]|\\.)*\" { yylval->sval = strdup(yytext); TOKEN(STRING); }
+\'([^']|\\.)*\' { yylval->sval = strdup(yytext); TOKEN(STRING); }
+{NUMBER}(\.{NUMBER}|(\.{NUMBER})?[eE][+-]?{NUMBER}) { yylval->fval = atof(yytext); TOKEN(FLOAT); }
+{NUMBER} { yylval->ival = atoi(yytext); TOKEN(NUMBER); }
+[a-z_][a-zA-Z0-9_]* { yylval->sval = strdup(yytext); TOKEN(ID); }
+[A-Z][a-zA-Z0-9_]* { yylval->sval = strdup(yytext); TOKEN(CONSTANT); }
 "=" { TOKEN(EQUAL); }
 ">" { TOKEN(GT); }
 "<" { TOKEN(LT); }

@@ -22,10 +22,11 @@
 %left tPLUS
 %right tEQUAL
 
-%token tSTRING tFLOAT tNUMBER tID tCONSTANT tEQUAL tGT tLT tGTE tLTE tNEQUAL
+%token tFLOAT tNUMBER tEQUAL tGT tLT tGTE tLTE tNEQUAL
 %token tPLUS tMINUS tMULT tDIV tMOD tEMARK tQMARK tAND tOR tLSBRACE tRSBRACE
 %token tLPAREN tRPAREN tLBRACE tRBRACE tAT tDOT tCOMMA tCOLON
 %token kCLASS kEND kDEF
+%token <sval> tSTRING tCONSTANT tID
 
 %start program
 
@@ -48,16 +49,16 @@ binary_expression: expression tPLUS expression
 
 assignment: variable tEQUAL expression
 
-class_definition: kCLASS tCONSTANT expressions kEND
+class_definition: kCLASS tCONSTANT expressions kEND { free($2); }
 
-method_definition: kDEF tID expressions kEND
-                 | kDEF tID tLPAREN tID tRPAREN expressions kEND
+method_definition: kDEF tID expressions kEND { free($2); }
+                 | kDEF tID tLPAREN tID tRPAREN expressions kEND { free($2); free($4); }
 
-method_call: variable tDOT tID
-           | tCONSTANT tDOT tID tLPAREN tSTRING tRPAREN
-           | tID tSTRING
+method_call: variable tDOT tID { free($3); }
+           | tCONSTANT tDOT tID tLPAREN tSTRING tRPAREN { free($1); free($3); free($5); }
+           | tID tSTRING { free($1); free($2); }
 
-variable: tID
-        | tAT tID
+variable: tID { free($1); }
+        | tAT tID { free($2); }
 
 value: tNUMBER

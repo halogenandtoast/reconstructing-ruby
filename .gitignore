@@ -4,3 +4,4 @@ ruby
 parse.tab.c
 parse.tab.h
 parse.output
+ruby.dSYM
